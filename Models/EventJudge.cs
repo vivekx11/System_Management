@@ -1,3 +1,5 @@
+// event judge 
+
 namespace CollegeEventPortal.Models
 {
     public class EventJudge
