@@ -1,3 +1,5 @@
+// regrestration page 
+
 namespace CollegeEventPortal.Models
 {
     public class Registration
