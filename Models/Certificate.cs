@@ -1,3 +1,5 @@
+// certification portal
+
 namespace CollegeEventPortal.Models
 {
     public class Certificate
