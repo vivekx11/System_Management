@@ -1,3 +1,4 @@
+// activity log show hoga 
 namespace CollegeEventPortal.Models
 {
     public class ActivityLog
