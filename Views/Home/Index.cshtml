@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="glass-card text-center mb-5">
+    <h1 class="display-4 mb-3"><i class="fas fa-trophy me-3"></i>Welcome to College Event Portal</h1>
+    <p class="lead">Manage and participate in exciting college events</p>
+    <div class="mt-4">
+        @if (!User.Identity!.IsAuthenticated)
+        {
+            <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-user-plus me-2"></i>Get Started
+            </a>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </a>
+        }
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="glass-card text-center">
+            <i class="fas fa-calendar-check fa-3x mb-3" style="color: #6366f1;"></i>
+            <h3>@ViewBag.TotalEvents</h3>
+            <p class="text-muted">Total Events</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="glass-card text-center">
+            <i class="fas fa-users fa-3x mb-3" style="color: #8b5cf6;"></i>
+            <h3>@ViewBag.TotalParticipants</h3>
+            <p class="text-muted">Active Participants</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="glass-card text-center">
+            <i class="fas fa-fire fa-3x mb-3" style="color: #f59e0b;"></i>
+            <h3>@ViewBag.OngoingEvents</h3>
+            <p class="text-muted">Ongoing Events</p>
+        </div>
+    </div>
+</div>
+
+<div class="glass-card">
+    <h2 class="mb-4"><i class="fas fa-calendar-alt me-2"></i>Upcoming Events</h2>
+    <div class="row">
+        @foreach (var evt in ViewBag.UpcomingEvents)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@evt.Name</h5>
+                        <p class="card-text text-muted">@evt.Description?.Substring(0, Math.Min(100, evt.Description.Length))...</p>
+                        <p class="mb-2"><i class="fas fa-calendar me-2"></i>@evt.StartDate.ToString("MMM dd, yyyy")</p>
+                        <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>@evt.Venue</p>
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <a asp-controller="Student" asp-action="EventDetails" asp-route-id="@evt.Id" class="btn btn-primary btn-sm">View Details</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

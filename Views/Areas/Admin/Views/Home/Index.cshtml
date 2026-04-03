@@ -1,0 +1,129 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="glass-card mb-4">
+    <h2><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</h2>
+    <p class="text-muted">Manage events, users, and system settings</p>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="glass-card text-center">
+            <i class="fas fa-users fa-3x mb-3" style="color: #6366f1;"></i>
+            <h3>@ViewBag.TotalUsers</h3>
+            <p class="text-muted">Total Users</p>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="glass-card text-center">
+            <i class="fas fa-calendar fa-3x mb-3" style="color: #8b5cf6;"></i>
+            <h3>@ViewBag.TotalEvents</h3>
+            <p class="text-muted">Total Events</p>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="glass-card text-center">
+            <i class="fas fa-fire fa-3x mb-3" style="color: #f59e0b;"></i>
+            <h3>@ViewBag.ActiveEvents</h3>
+            <p class="text-muted">Active Events</p>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="glass-card text-center">
+            <i class="fas fa-user-check fa-3x mb-3" style="color: #10b981;"></i>
+            <h3>@ViewBag.TotalRegistrations</h3>
+            <p class="text-muted">Registrations</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="glass-card">
+            <h4 class="mb-3"><i class="fas fa-calendar-alt me-2"></i>Upcoming Events</h4>
+            @if (ViewBag.UpcomingEvents.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var evt in ViewBag.UpcomingEvents)
+                            {
+                                <tr>
+                                    <td>@evt.Name</td>
+                                    <td>@evt.StartDate.ToString("MMM dd, yyyy")</td>
+                                    <td><span class="badge bg-info">@evt.Status</span></td>
+                                    <td>
+                                        <a asp-controller="Events" asp-action="Edit" asp-route-id="@evt.Id" class="btn btn-sm btn-primary">Edit</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No upcoming events.</p>
+            }
+            <a asp-controller="Events" asp-action="Create" class="btn btn-primary">Create New Event</a>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="glass-card">
+            <h4 class="mb-3"><i class="fas fa-history me-2"></i>Recent Activity</h4>
+            @if (ViewBag.RecentActivities.Count > 0)
+            {
+                <div class="list-group">
+                    @foreach (var activity in ViewBag.RecentActivities)
+                    {
+                        <div class="list-group-item">
+                            <small class="text-muted">@activity.CreatedAt.ToString("MMM dd, HH:mm")</small>
+                            <p class="mb-0">@activity.Action - @activity.Entity</p>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No recent activity.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="glass-card">
+    <h4 class="mb-3"><i class="fas fa-tools me-2"></i>Quick Actions</h4>
+    <div class="row">
+        <div class="col-md-3 mb-2">
+            <a asp-controller="Events" asp-action="Index" class="btn btn-outline-primary w-100">
+                <i class="fas fa-calendar me-2"></i>Manage Events
+            </a>
+        </div>
+        <div class="col-md-3 mb-2">
+            <a asp-controller="Home" asp-action="Analytics" class="btn btn-outline-primary w-100">
+                <i class="fas fa-chart-bar me-2"></i>Analytics
+            </a>
+        </div>
+        <div class="col-md-3 mb-2">
+            <a asp-controller="Events" asp-action="Create" class="btn btn-outline-success w-100">
+                <i class="fas fa-plus me-2"></i>New Event
+            </a>
+        </div>
+        <div class="col-md-3 mb-2">
+            <a href="#" class="btn btn-outline-info w-100">
+                <i class="fas fa-download me-2"></i>Export Reports
+            </a>
+        </div>
+    </div>
+</div>
