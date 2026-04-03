@@ -1,0 +1,47 @@
+@model IEnumerable<CollegeEventPortal.Models.Event>
+@{
+    ViewData["Title"] = "Judge Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">Judge Dashboard</h2>
+
+    <div class="card">
+        <div class="card-header">
+            <h5>Assigned Events</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="row g-4">
+                    @foreach (var evt in Model)
+                    {
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">@evt.Name</h5>
+                                    <p class="card-text">@evt.Description</p>
+                                    <p class="text-muted">
+                                        <small>@evt.StartDate.ToString("MMM dd, yyyy") - @evt.EndDate.ToString("MMM dd, yyyy")</small>
+                                    </p>
+                                    <span class="badge bg-@(evt.Status == CollegeEventPortal.Models.EventStatus.Ongoing ? "success" : "secondary")">
+                                        @evt.Status
+                                    </span>
+                                    <div class="mt-3">
+                                        <a asp-action="EventDetails" asp-route-id="@evt.Id" class="btn btn-sm btn-primary">View Details</a>
+                                        <a asp-action="ScoreParticipants" asp-route-eventId="@evt.Id" class="btn btn-sm btn-success">Score</a>
+                                        <a asp-action="Leaderboard" asp-route-eventId="@evt.Id" class="btn btn-sm btn-info">Leaderboard</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No events assigned yet</p>
+            }
+        </div>
+    </div>
+</div>

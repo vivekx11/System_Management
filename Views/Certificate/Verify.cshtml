@@ -1,0 +1,87 @@
+@model CollegeEventPortal.Models.Certificate
+@{
+    ViewData["Title"] = "Verify Certificate";
+    var isValid = ViewBag.IsValid;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="glass-card text-center">
+            @if (isValid)
+            {
+                <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+                <h2 class="text-success">Certificate Verified!</h2>
+                <p class="lead">This is a valid certificate issued by College Event Management Portal</p>
+                
+                <hr class="my-4" />
+                
+                <div class="row text-start">
+                    <div class="col-md-6 mb-3">
+                        <strong>Certificate Number:</strong>
+                        <p class="mb-0"><code>@Model.CertificateNumber</code></p>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <strong>Issued To:</strong>
+                        <p class="mb-0">@Model.User.FullName</p>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <strong>Event:</strong>
+                        <p class="mb-0">@Model.Event.Name</p>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <strong>Rank Achieved:</strong>
+                        <p class="mb-0">
+                            @if (Model.Rank == 1)
+                            {
+                                <span class="badge bg-warning text-dark fs-6">🏆 1st Place</span>
+                            }
+                            else if (Model.Rank == 2)
+                            {
+                                <span class="badge bg-secondary fs-6">🥈 2nd Place</span>
+                            }
+                            else if (Model.Rank == 3)
+                            {
+                                <span class="badge bg-danger fs-6">🥉 3rd Place</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary fs-6">Rank @Model.Rank</span>
+                            }
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <strong>Issue Date:</strong>
+                        <p class="mb-0">@Model.IssuedAt.ToString("MMMM dd, yyyy")</p>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <strong>Status:</strong>
+                        <p class="mb-0"><span class="badge bg-success">Valid</span></p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <i class="fas fa-times-circle fa-5x text-danger mb-4"></i>
+                <h2 class="text-danger">Invalid Certificate</h2>
+                <p class="lead">This certificate could not be verified.</p>
+                <p class="text-muted">The certificate number you entered does not exist in our records.</p>
+            }
+            
+            <hr class="my-4" />
+            
+            <form asp-action="Verify" method="get" class="mt-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="certificateNumber" placeholder="Enter certificate number to verify" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search me-2"></i>Verify
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

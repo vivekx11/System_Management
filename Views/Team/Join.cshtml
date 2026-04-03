@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "Join Team";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="glass-card">
+            <div class="text-center mb-4">
+                <i class="fas fa-user-plus fa-4x text-primary mb-3"></i>
+                <h2>Join a Team</h2>
+                <p class="text-muted">Enter the invite code shared by your team leader</p>
+            </div>
+            
+            <form asp-action="Join" method="post">
+                <div class="mb-3">
+                    <label for="inviteCode" class="form-label">Invite Code <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-lg text-center" id="inviteCode" name="inviteCode" required maxlength="8" placeholder="XXXXXXXX" style="letter-spacing: 2px; font-weight: bold;">
+                    <div class="form-text">Enter the 8-character invite code (case-insensitive)</div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>How to get an invite code?</strong><br />
+                    Ask your team leader for the invite code. They can find it in their team details page.
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Join Team
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="glass-card mt-3">
+            <h5><i class="fas fa-question-circle me-2"></i>Don't have an invite code?</h5>
+            <p class="mb-2">You can:</p>
+            <ul>
+                <li>Ask your friends if they have created a team</li>
+                <li>Create your own team for an event</li>
+                <li>Register for solo events</li>
+            </ul>
+            <a asp-controller="Student" asp-action="Events" class="btn btn-outline-primary">
+                <i class="fas fa-calendar-alt me-2"></i>Browse Events
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('inviteCode').addEventListener('input', function(e) {
+            this.value = this.value.toUpperCase();
+        });
+    </script>
+}

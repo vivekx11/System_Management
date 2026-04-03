@@ -1,0 +1,85 @@
+@model CollegeEventPortal.Models.Event
+@{
+    ViewData["Title"] = "Assign Judges";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">Assign Judges to @Model.Name</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Assigned Judges</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.EventJudges.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var ej in Model.EventJudges)
+                            {
+                                <li class="list-group-item">
+                                    @ej.Judge.FullName
+                                    <small class="text-muted">(@ej.Judge.Email)</small>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No judges assigned yet</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Available Judges</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.AvailableJudges != null && ViewBag.AvailableJudges.Count > 0)
+                    {
+                        <form asp-action="AssignJudge" method="post">
+                            <input type="hidden" name="eventId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <select name="judgeId" class="form-select" required>
+                                    <option value="">Select a judge</option>
+                                    @foreach (var judge in ViewBag.AvailableJudges)
+                                    {
+                                        <option value="@judge.Id">@judge.FullName (@judge.Email)</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Assign Judge</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No available judges</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-secondary">Back to Events</a>
+    </div>
+</div>

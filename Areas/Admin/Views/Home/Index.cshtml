@@ -1,0 +1,95 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <h2>@ViewBag.TotalUsers</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Events</h5>
+                    <h2>@ViewBag.TotalEvents</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Active Events</h5>
+                    <h2>@ViewBag.ActiveEvents</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Registrations</h5>
+                    <h2>@ViewBag.TotalRegistrations</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Upcoming Events</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.UpcomingEvents != null && ViewBag.UpcomingEvents.Count > 0)
+                    {
+                        <div class="list-group">
+                            @foreach (var evt in ViewBag.UpcomingEvents)
+                            {
+                                <div class="list-group-item">
+                                    <h6>@evt.Name</h6>
+                                    <small class="text-muted">@evt.StartDate.ToString("MMM dd, yyyy")</small>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No upcoming events</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Activities</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentActivities != null && ViewBag.RecentActivities.Count > 0)
+                    {
+                        <div class="list-group">
+                            @foreach (var activity in ViewBag.RecentActivities)
+                            {
+                                <div class="list-group-item">
+                                    <small>@activity.Action - @activity.CreatedAt.ToString("MMM dd, HH:mm")</small>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No recent activities</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

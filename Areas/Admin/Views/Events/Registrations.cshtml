@@ -1,0 +1,64 @@
+@model IEnumerable<CollegeEventPortal.Models.Registration>
+@{
+    ViewData["Title"] = "Event Registrations";
+}
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">Registrations for @ViewBag.Event.Name</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Email</th>
+                        <th>Team</th>
+                        <th>Registered At</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reg in Model)
+                    {
+                        <tr>
+                            <td>@reg.User.FullName</td>
+                            <td>@reg.User.Email</td>
+                            <td>@(reg.Team?.Name ?? "Solo")</td>
+                            <td>@reg.RegisteredAt.ToString("MMM dd, yyyy HH:mm")</td>
+                            <td>
+                                <span class="badge bg-@(reg.Status == CollegeEventPortal.Models.RegistrationStatus.Approved ? "success" : reg.Status == CollegeEventPortal.Models.RegistrationStatus.Rejected ? "danger" : "warning")">
+                                    @reg.Status
+                                </span>
+                            </td>
+                            <td>
+                                @if (reg.Status == CollegeEventPortal.Models.RegistrationStatus.Pending)
+                                {
+                                    <form asp-action="ApproveRegistration" asp-route-id="@reg.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                    </form>
+                                    <form asp-action="RejectRegistration" asp-route-id="@reg.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-secondary">Back to Events</a>
+    </div>
+</div>

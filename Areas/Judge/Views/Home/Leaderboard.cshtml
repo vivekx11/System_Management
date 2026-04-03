@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Leaderboard";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">Leaderboard - @ViewBag.Event.Name</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>@(ViewBag.Event.AllowTeamRegistration ? "Team" : "Participant")</th>
+                        <th>Total Score</th>
+                        <th>Rounds Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int rank = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (rank == 1)
+                                {
+                                    <span class="badge bg-warning">🥇 @rank</span>
+                                }
+                                else if (rank == 2)
+                                {
+                                    <span class="badge bg-secondary">🥈 @rank</span>
+                                }
+                                else if (rank == 3)
+                                {
+                                    <span class="badge bg-danger">🥉 @rank</span>
+                                }
+                                else
+                                {
+                                    <span>@rank</span>
+                                }
+                            </td>
+                            <td>@item.Name</td>
+                            <td>@item.TotalScore.ToString("F2")</td>
+                            <td>@item.Rounds</td>
+                        </tr>
+                        rank++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="EventDetails" asp-route-id="@ViewBag.Event.Id" class="btn btn-secondary">Back to Event</a>
+    </div>
+</div>

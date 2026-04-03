@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Create Team";
+    var eventData = ViewBag.Event as CollegeEventPortal.Models.Event;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="glass-card">
+            <h2 class="mb-4"><i class="fas fa-users me-2"></i>Create Team</h2>
+            
+            <div class="alert alert-info">
+                <strong>Event:</strong> @eventData.Name<br />
+                <strong>Max Team Size:</strong> @eventData.MaxTeamSize members
+            </div>
+            
+            <form asp-action="Create" method="post">
+                <input type="hidden" name="eventId" value="@eventData.Id" />
+                
+                <div class="mb-3">
+                    <label for="teamName" class="form-label">Team Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="teamName" name="teamName" required maxlength="100" placeholder="Enter a unique team name">
+                    <div class="form-text">Choose a creative name for your team (max 100 characters)</div>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Note:</strong> After creating the team, you will receive a unique invite code that you can share with other members to join your team.
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fas fa-plus-circle me-2"></i>Create Team
+                    </button>
+                    <a asp-controller="Student" asp-action="EventDetails" asp-route-id="@eventData.Id" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

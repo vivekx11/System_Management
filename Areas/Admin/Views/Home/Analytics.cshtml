@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "Analytics";
+}
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">Analytics Dashboard</h2>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Event Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Type</th>
+                                <th>Registrations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.EventStats != null)
+                            {
+                                @foreach (var stat in ViewBag.EventStats)
+                                {
+                                    <tr>
+                                        <td>@stat.Name</td>
+                                        <td>@stat.EventType</td>
+                                        <td>@stat.RegistrationCount</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Registrations by Month</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.RegistrationsByMonth != null)
+                            {
+                                @foreach (var reg in ViewBag.RegistrationsByMonth)
+                                {
+                                    <tr>
+                                        <td>@reg.Month</td>
+                                        <td>@reg.Year</td>
+                                        <td>@reg.Count</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+@model CollegeEventPortal.Models.Event
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <h2>@Model.Name</h2>
+                @if (Model.Status == CollegeEventPortal.Models.EventStatus.RegistrationOpen)
+                {
+                    <span class="badge bg-success fs-6">Registration Open</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary fs-6">@Model.Status</span>
+                }
+            </div>
+            
+            <div class="mb-4">
+                @switch (Model.EventType)
+                {
+                    case CollegeEventPortal.Models.EventType.DebuggingCompetition:
+                        <span class="badge bg-danger">Debugging Competition</span>
+                        break;
+                    case CollegeEventPortal.Models.EventType.CodeInTheDark:
+                        <span class="badge bg-dark">Code in the Dark</span>
+                        break;
+                    case CollegeEventPortal.Models.EventType.UIUXDesignChallenge:
+                        <span class="badge bg-primary">UI/UX Design Challenge</span>
+                        break;
+                }
+            </div>
+            
+            <h4>Description</h4>
+            <p class="lead">@Model.Description</p>
+            
+            @if (!string.IsNullOrEmpty(Model.Rules))
+            {
+                <h4 class="mt-4">Rules & Guidelines</h4>
+                <div class="alert alert-info">
+                    @Html.Raw(Model.Rules.Replace("\n", "<br/>"))
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="col-lg-4 mb-4">
+        <div class="glass-card">
+            <h4 class="mb-3">Event Details</h4>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-calendar me-2"></i>Start Date</strong>
+                <p class="mb-0">@Model.StartDate.ToString("dddd, MMMM dd, yyyy")</p>
+            </div>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-calendar-check me-2"></i>End Date</strong>
+                <p class="mb-0">@Model.EndDate.ToString("dddd, MMMM dd, yyyy")</p>
+            </div>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-clock me-2"></i>Registration Deadline</strong>
+                <p class="mb-0">@Model.RegistrationDeadline.ToString("dddd, MMMM dd, yyyy")</p>
+            </div>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-map-marker-alt me-2"></i>Venue</strong>
+                <p class="mb-0">@Model.Venue</p>
+            </div>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-users me-2"></i>Max Participants</strong>
+                <p class="mb-0">@Model.MaxParticipants</p>
+            </div>
+            
+            @if (Model.AllowTeamRegistration)
+            {
+                <div class="mb-3">
+                    <strong><i class="fas fa-user-friends me-2"></i>Team Size</strong>
+                    <p class="mb-0">Up to @Model.MaxTeamSize members</p>
+                </div>
+            }
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-layer-group me-2"></i>Rounds</strong>
+                <p class="mb-0">@Model.TotalRounds round(s)</p>
+            </div>
+            
+            <hr />
+            
+            @if (ViewBag.IsRegistered)
+            {
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>You are registered for this event!
+                </div>
+                <a asp-action="MyRegistrations" class="btn btn-outline-primary w-100">
+                    <i class="fas fa-list me-2"></i>View My Registrations
+                </a>
+            }
+            else if (Model.Status == CollegeEventPortal.Models.EventStatus.RegistrationOpen && Model.RegistrationDeadline > DateTime.UtcNow)
+            {
+                <form asp-action="RegisterForEvent" method="post">
+                    <input type="hidden" name="eventId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-success w-100 mb-2">
+                        <i class="fas fa-user-plus me-2"></i>Register Now
+                    </button>
+                </form>
+                
+                @if (Model.AllowTeamRegistration)
+                {
+                    <a asp-controller="Team" asp-action="Create" asp-route-eventId="@Model.Id" class="btn btn-outline-primary w-100 mb-2">
+                        <i class="fas fa-users me-2"></i>Create Team
+                    </a>
+                    <a asp-controller="Team" asp-action="Join" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-user-plus me-2"></i>Join Team
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Registration is closed
+                </div>
+            }
+            
+            <a asp-action="Leaderboard" asp-route-eventId="@Model.Id" class="btn btn-outline-info w-100 mt-2">
+                <i class="fas fa-trophy me-2"></i>View Leaderboard
+            </a>
+        </div>
+        
+        <div class="glass-card mt-3">
+            <h5>Registrations</h5>
+            <p class="mb-0"><strong>@Model.Registrations.Count</strong> / @Model.MaxParticipants</p>
+            <div class="progress mt-2">
+                <div class="progress-bar" role="progressbar" style="width: @((Model.Registrations.Count * 100.0 / Model.MaxParticipants))%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="glass-card">
+    <a asp-action="Events" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Events
+    </a>
+</div>

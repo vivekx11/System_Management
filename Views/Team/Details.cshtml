@@ -1,0 +1,143 @@
+@model CollegeEventPortal.Models.Team
+@{
+    ViewData["Title"] = Model.Name;
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var isLeader = Model.LeaderId == currentUserId;
+}
+
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <h2>@Model.Name</h2>
+                @if (Model.Status == CollegeEventPortal.Models.TeamStatus.Active)
+                {
+                    <span class="badge bg-success fs-6">Active</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary fs-6">@Model.Status</span>
+                }
+            </div>
+            
+            <div class="mb-4">
+                <h5>Event</h5>
+                <p class="lead">@Model.Event.Name</p>
+                <a asp-controller="Student" asp-action="EventDetails" asp-route-id="@Model.EventId" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-external-link-alt me-1"></i>View Event
+                </a>
+            </div>
+            
+            <h4 class="mb-3">Team Members (@Model.Members.Count/@Model.Event.MaxTeamSize)</h4>
+            <div class="list-group">
+                @foreach (var member in Model.Members.OrderByDescending(m => m.IsLeader))
+                {
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">
+                                    @member.User.FullName
+                                    @if (member.IsLeader)
+                                    {
+                                        <span class="badge bg-warning text-dark">Team Leader</span>
+                                    }
+                                </h6>
+                                <small class="text-muted">@member.User.Email</small>
+                                @if (!string.IsNullOrEmpty(member.User.Department))
+                                {
+                                    <br />
+                                    <small class="text-muted">@member.User.Department - Year @member.User.Year</small>
+                                }
+                            </div>
+                            <div>
+                                <small class="text-muted">Joined: @member.JoinedAt.ToString("MMM dd, yyyy")</small>
+                                @if (isLeader && !member.IsLeader)
+                                {
+                                    <button class="btn btn-sm btn-outline-danger ms-2" onclick="if(confirm('Remove this member?')) { /* Add remove logic */ }">
+                                        <i class="fas fa-user-times"></i>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 mb-4">
+        <div class="glass-card">
+            <h4 class="mb-3">Team Information</h4>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-key me-2"></i>Invite Code</strong>
+                <div class="input-group mt-2">
+                    <input type="text" class="form-control" value="@Model.InviteCode" id="inviteCode" readonly>
+                    <button class="btn btn-outline-secondary" type="button" onclick="copyInviteCode()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <small class="text-muted">Share this code with others to join your team</small>
+            </div>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-user-tie me-2"></i>Team Leader</strong>
+                <p class="mb-0">@Model.Leader.FullName</p>
+            </div>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-calendar me-2"></i>Created</strong>
+                <p class="mb-0">@Model.CreatedAt.ToString("MMMM dd, yyyy")</p>
+            </div>
+            
+            <div class="mb-3">
+                <strong><i class="fas fa-users me-2"></i>Members</strong>
+                <p class="mb-0">@Model.Members.Count / @Model.Event.MaxTeamSize</p>
+                <div class="progress mt-2">
+                    <div class="progress-bar" role="progressbar" style="width: @((Model.Members.Count * 100.0 / Model.Event.MaxTeamSize))%"></div>
+                </div>
+            </div>
+            
+            <hr />
+            
+            @if (!isLeader)
+            {
+                <form asp-action="Leave" asp-route-teamId="@Model.Id" method="post" onsubmit="return confirm('Are you sure you want to leave this team?');">
+                    <button type="submit" class="btn btn-danger w-100">
+                        <i class="fas fa-sign-out-alt me-2"></i>Leave Team
+                    </button>
+                </form>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>You are the team leader
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="glass-card">
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to My Teams
+    </a>
+</div>
+
+@section Scripts {
+    <script>
+        function copyInviteCode() {
+            var copyText = document.getElementById("inviteCode");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            
+            var btn = event.target.closest('button');
+            var originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(function() {
+                btn.innerHTML = originalHTML;
+            }, 2000);
+        }
+    </script>
+}

@@ -1,0 +1,58 @@
+@model IEnumerable<CollegeEventPortal.Models.Event>
+@{
+    ViewData["Title"] = "Manage Events";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Manage Events</h2>
+        <a asp-action="Create" class="btn btn-primary">Create New Event</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                        <th>Registrations</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.EventType</td>
+                            <td>@item.StartDate.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                <span class="badge bg-@(item.Status == CollegeEventPortal.Models.EventStatus.RegistrationOpen ? "success" : item.Status == CollegeEventPortal.Models.EventStatus.Ongoing ? "warning" : "secondary")">
+                                    @item.Status
+                                </span>
+                            </td>
+                            <td>@item.Registrations.Count</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-action="Registrations" asp-route-id="@item.Id" class="btn btn-sm btn-info">Registrations</a>
+                                <a asp-action="AssignJudges" asp-route-id="@item.Id" class="btn btn-sm btn-secondary">Judges</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

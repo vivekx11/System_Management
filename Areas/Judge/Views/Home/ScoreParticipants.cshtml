@@ -1,0 +1,72 @@
+@model CollegeEventPortal.Models.Event
+@{
+    ViewData["Title"] = "Score Participants";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">Score Participants - @Model.Name</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="SubmitScore" method="post">
+                <input type="hidden" name="eventId" value="@Model.Id" />
+
+                @if (Model.AllowTeamRegistration)
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Select Team</label>
+                        <select name="teamId" class="form-select" required>
+                            <option value="">Choose a team</option>
+                            @foreach (var team in Model.Teams)
+                            {
+                                <option value="@team.Id">@team.Name</option>
+                            }
+                        </select>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Select Participant</label>
+                        <select name="participantId" class="form-select" required>
+                            <option value="">Choose a participant</option>
+                            @foreach (var reg in Model.Registrations.Where(r => r.Status == CollegeEventPortal.Models.RegistrationStatus.Approved))
+                            {
+                                <option value="@reg.UserId">@reg.User.FullName</option>
+                            }
+                        </select>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Round</label>
+                        <input type="number" name="round" class="form-control" min="1" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Points</label>
+                        <input type="number" name="points" class="form-control" step="0.01" min="0" max="100" required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Remarks (Optional)</label>
+                    <textarea name="remarks" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Submit Score</button>
+                    <a asp-action="EventDetails" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

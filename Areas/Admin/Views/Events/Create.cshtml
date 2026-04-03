@@ -1,0 +1,97 @@
+@model CollegeEventPortal.Models.Event
+@{
+    ViewData["Title"] = "Create Event";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">Create New Event</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EventType" class="form-label"></label>
+                        <select asp-for="EventType" class="form-select">
+                            <option value="DebuggingCompetition">Debugging Competition</option>
+                            <option value="CodeInTheDark">Code in the Dark</option>
+                            <option value="UIUXDesignChallenge">UI/UX Design Challenge</option>
+                        </select>
+                        <span asp-validation-for="EventType" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="StartDate" class="form-label"></label>
+                        <input asp-for="StartDate" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EndDate" class="form-label"></label>
+                        <input asp-for="EndDate" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="RegistrationDeadline" class="form-label"></label>
+                        <input asp-for="RegistrationDeadline" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="RegistrationDeadline" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MaxParticipants" class="form-label"></label>
+                        <input asp-for="MaxParticipants" type="number" class="form-control" />
+                        <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
+                            <input asp-for="AllowTeamRegistration" class="form-check-input" />
+                            <label asp-for="AllowTeamRegistration" class="form-check-label"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MaxTeamSize" class="form-label"></label>
+                        <input asp-for="MaxTeamSize" type="number" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Status" class="form-label"></label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="Draft">Draft</option>
+                        <option value="Published">Published</option>
+                        <option value="RegistrationOpen">Registration Open</option>
+                        <option value="RegistrationClosed">Registration Closed</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Create Event</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
