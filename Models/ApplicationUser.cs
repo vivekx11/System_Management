@@ -1,3 +1,4 @@
+// application pages
 using Microsoft.AspNetCore.Identity;
 
 namespace CollegeEventPortal.Models
