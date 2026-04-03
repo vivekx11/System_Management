@@ -373,7 +373,7 @@ namespace CollegeEventPortal.Migrations
                     ParticipantId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TeamId = table.Column<int>(type: "int", nullable: true),
                     Round = table.Column<int>(type: "int", nullable: false),
-                    Points = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Points = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JudgeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ScoredAt = table.Column<DateTime>(type: "datetime2", nullable: false)

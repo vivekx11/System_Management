@@ -381,6 +381,7 @@ namespace CollegeEventPortal.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Points")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Remarks")

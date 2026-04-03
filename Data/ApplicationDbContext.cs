@@ -30,6 +30,11 @@ namespace CollegeEventPortal.Data
             builder.Entity<Event>()
                 .HasIndex(e => e.Name);
 
+            // Score configuration - Fix decimal precision warning
+            builder.Entity<Score>()
+                .Property(s => s.Points)
+                .HasPrecision(18, 2);
+
             // Team configuration
             builder.Entity<Team>()
                 .HasIndex(t => t.InviteCode)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollegeEventPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260403064442_InitialCreate")]
+    [Migration("20260403115022_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -384,6 +384,7 @@ namespace CollegeEventPortal.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Points")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Remarks")
