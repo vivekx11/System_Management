@@ -1,3 +1,5 @@
+// home 
+
 using CollegeEventPortal.Data;
 using CollegeEventPortal.Models;
 using Microsoft.AspNetCore.Mvc;
