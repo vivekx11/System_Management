@@ -1,3 +1,5 @@
+// acc control
+
 using CollegeEventPortal.Models;
 using CollegeEventPortal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
