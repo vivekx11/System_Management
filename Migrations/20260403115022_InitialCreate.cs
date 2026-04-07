@@ -108,6 +108,7 @@ namespace CollegeEventPortal.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+                // system requirement 
 
             migrationBuilder.CreateTable(
                 name: "ActivityLogs",
