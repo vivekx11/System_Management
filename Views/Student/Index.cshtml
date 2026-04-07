@@ -2,136 +2,231 @@
     ViewData["Title"] = "Student Dashboard";
 }
 
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="glass-card">
-            <h2><i class="fas fa-user-graduate me-2"></i>Welcome, @ViewBag.User.FullName!</h2>
-            <p class="text-muted mb-0">@ViewBag.User.Department - Year @ViewBag.User.Year</p>
+<!-- Welcome Section -->
+<div class="glass-card mb-4">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold mb-2">
+                <span class="text-gradient">Welcome back, @ViewBag.User.FullName!</span>
+            </h1>
+            <p class="lead text-muted mb-0">
+                <i class="fas fa-envelope me-2"></i>@ViewBag.User.Email
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <a asp-controller="Student" asp-action="Events" class="btn btn-primary btn-lg">
+                <i class="fas fa-calendar-plus me-2"></i>Browse Events
+            </a>
         </div>
     </div>
 </div>
 
-<div class="row mb-4">
-    <div class="col-md-4 mb-3">
-        <div class="glass-card text-center">
-            <i class="fas fa-calendar-check fa-3x mb-3" style="color: #6366f1;"></i>
-            <h3>@ViewBag.MyRegistrations.Count</h3>
-            <p class="text-muted">My Registrations</p>
+<!-- Quick Stats -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-number">@ViewBag.MyRegistrations.Count</div>
+            <div class="stat-label">My Registrations</div>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="glass-card text-center">
-            <i class="fas fa-trophy fa-3x mb-3" style="color: #f59e0b;"></i>
-            <h3>@ViewBag.UpcomingEvents.Count</h3>
-            <p class="text-muted">Upcoming Events</p>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-number">@ViewBag.UpcomingEvents.Count</div>
+            <div class="stat-label">Available Events</div>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="glass-card text-center">
-            <i class="fas fa-bell fa-3x mb-3" style="color: #ef4444;"></i>
-            <h3>@ViewBag.Notifications.Count</h3>
-            <p class="text-muted">Notifications</p>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="stat-number">@ViewBag.Notifications.Count</div>
+            <div class="stat-label">Notifications</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <i class="fas fa-certificate"></i>
+            </div>
+            <div class="stat-number">0</div>
+            <div class="stat-label">Certificates</div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-8 mb-4">
+<div class="row g-4">
+    <!-- Upcoming Events -->
+    <div class="col-lg-8">
         <div class="glass-card">
-            <h4 class="mb-3"><i class="fas fa-calendar-alt me-2"></i>Upcoming Events</h4>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">
+                    <i class="fas fa-calendar-alt me-2 text-gradient"></i>
+                    <span class="text-gradient">Upcoming Events</span>
+                </h3>
+                <a asp-controller="Student" asp-action="Events" class="btn btn-sm btn-primary">
+                    <i class="fas fa-arrow-right me-1"></i>View All
+                </a>
+            </div>
+            
             @if (ViewBag.UpcomingEvents.Count > 0)
             {
-                <div class="list-group">
+                <div class="row g-3">
                     @foreach (var evt in ViewBag.UpcomingEvents)
                     {
-                        <a asp-action="EventDetails" asp-route-id="@evt.Id" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">@evt.Name</h5>
-                                <small>@evt.StartDate.ToString("MMM dd")</small>
+                        <div class="col-md-6">
+                            <div class="card event-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="badge bg-primary">@evt.EventType</span>
+                                        <span class="badge bg-success">@evt.Status</span>
+                                    </div>
+                                    <h5 class="card-title fw-bold">@evt.Name</h5>
+                                    <p class="card-text text-muted small mb-2">
+                                        @(evt.Description?.Length > 80 ? evt.Description.Substring(0, 80) + "..." : evt.Description)
+                                    </p>
+                                    <div class="mb-2">
+                                        <i class="fas fa-calendar text-primary me-1"></i>
+                                        <small>@evt.StartDate.ToString("MMM dd, yyyy")</small>
+                                    </div>
+                                    <a asp-controller="Student" asp-action="EventDetails" asp-route-id="@evt.Id" class="btn btn-sm btn-primary w-100">
+                                        <i class="fas fa-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
                             </div>
-                            <p class="mb-1 text-muted">@evt.Venue</p>
-                            <small><span class="badge bg-primary">@evt.EventType</span></small>
-                        </a>
-                    }
-                </div>
-            }
-            else
-            {
-                <p class="text-muted">No upcoming events available.</p>
-            }
-        </div>
-    </div>
-    
-    <div class="col-md-4 mb-4">
-        <div class="glass-card">
-            <h4 class="mb-3"><i class="fas fa-bell me-2"></i>Notifications</h4>
-            @if (ViewBag.Notifications.Count > 0)
-            {
-                <div class="list-group">
-                    @foreach (var notification in ViewBag.Notifications)
-                    {
-                        <div class="list-group-item @(notification.IsRead ? "" : "list-group-item-info")">
-                            <h6 class="mb-1">@notification.Title</h6>
-                            <p class="mb-1 small">@notification.Message</p>
-                            <small class="text-muted">@notification.CreatedAt.ToString("MMM dd, HH:mm")</small>
                         </div>
                     }
                 </div>
             }
             else
             {
-                <p class="text-muted">No new notifications.</p>
+                <div class="text-center py-4">
+                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No upcoming events available</p>
+                </div>
+            }
+        </div>
+
+        <!-- My Registrations -->
+        <div class="glass-card mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">
+                    <i class="fas fa-clipboard-list me-2 text-gradient"></i>
+                    <span class="text-gradient">My Registrations</span>
+                </h3>
+                <a asp-controller="Student" asp-action="MyRegistrations" class="btn btn-sm btn-primary">
+                    <i class="fas fa-arrow-right me-1"></i>View All
+                </a>
+            </div>
+            
+            @if (ViewBag.MyRegistrations.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reg in ViewBag.MyRegistrations)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@reg.Event.Name</td>
+                                    <td><span class="badge bg-info">@reg.Event.EventType</span></td>
+                                    <td>
+                                        <span class="badge bg-@(reg.Status == CollegeEventPortal.Models.RegistrationStatus.Approved ? "success" : reg.Status == CollegeEventPortal.Models.RegistrationStatus.Rejected ? "danger" : "warning")">
+                                            @reg.Status
+                                        </span>
+                                    </td>
+                                    <td><small class="text-muted">@reg.RegisteredAt.ToString("MMM dd, yyyy")</small></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-4">
+                    <i class="fas fa-clipboard fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">You haven't registered for any events yet</p>
+                    <a asp-controller="Student" asp-action="Events" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Register Now
+                    </a>
+                </div>
             }
         </div>
     </div>
-</div>
 
-<div class="glass-card">
-    <h4 class="mb-3"><i class="fas fa-list me-2"></i>My Recent Registrations</h4>
-    @if (ViewBag.MyRegistrations.Count > 0)
-    {
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Event</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var reg in ViewBag.MyRegistrations)
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Notifications -->
+        <div class="glass-card mb-4">
+            <h4 class="mb-4">
+                <i class="fas fa-bell me-2 text-gradient"></i>
+                <span class="text-gradient">Notifications</span>
+            </h4>
+            
+            @if (ViewBag.Notifications.Count > 0)
+            {
+                <div class="list-group">
+                    @foreach (var notification in ViewBag.Notifications)
                     {
-                        <tr>
-                            <td>@reg.Event.Name</td>
-                            <td>@reg.Event.StartDate.ToString("MMM dd, yyyy")</td>
-                            <td>
-                                @if (reg.Status == CollegeEventPortal.Models.RegistrationStatus.Approved)
-                                {
-                                    <span class="badge bg-success">Approved</span>
-                                }
-                                else if (reg.Status == CollegeEventPortal.Models.RegistrationStatus.Pending)
-                                {
-                                    <span class="badge bg-warning">Pending</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger">@reg.Status</span>
-                                }
-                            </td>
-                            <td>
-                                <a asp-action="EventDetails" asp-route-id="@reg.EventId" class="btn btn-sm btn-primary">View</a>
-                            </td>
-                        </tr>
+                        <div class="list-group-item border-0 mb-2" style="border-radius: 12px; background: rgba(99, 102, 241, 0.05);">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-@(notification.Type == CollegeEventPortal.Models.NotificationType.Success ? "check-circle text-success" : notification.Type == CollegeEventPortal.Models.NotificationType.Warning ? "exclamation-triangle text-warning" : "info-circle text-info") me-2 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold">@notification.Title</h6>
+                                    <p class="mb-1 small text-muted">@notification.Message</p>
+                                    <small class="text-muted">@notification.CreatedAt.ToString("MMM dd, HH:mm")</small>
+                                </div>
+                            </div>
+                        </div>
                     }
-                </tbody>
-            </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-3">
+                    <i class="fas fa-bell-slash fa-2x text-muted mb-2"></i>
+                    <p class="text-muted small mb-0">No new notifications</p>
+                </div>
+            }
         </div>
-    }
-    else
-    {
-        <p class="text-muted">You haven't registered for any events yet.</p>
-        <a asp-action="Events" class="btn btn-primary">Browse Events</a>
-    }
+
+        <!-- Quick Actions -->
+        <div class="glass-card">
+            <h4 class="mb-4">
+                <i class="fas fa-bolt me-2 text-gradient"></i>
+                <span class="text-gradient">Quick Actions</span>
+            </h4>
+            <div class="d-grid gap-2">
+                <a asp-controller="Student" asp-action="Events" class="btn btn-primary">
+                    <i class="fas fa-calendar-plus me-2"></i>Browse Events
+                </a>
+                <a asp-controller="Team" asp-action="Create" class="btn btn-success">
+                    <i class="fas fa-users me-2"></i>Create Team
+                </a>
+                <a asp-controller="Team" asp-action="Join" class="btn btn-info">
+                    <i class="fas fa-user-plus me-2"></i>Join Team
+                </a>
+                <a asp-controller="Student" asp-action="Certificates" class="btn btn-warning">
+                    <i class="fas fa-certificate me-2"></i>My Certificates
+                </a>
+                <a asp-controller="Student" asp-action="Profile" class="btn btn-secondary">
+                    <i class="fas fa-user-circle me-2"></i>My Profile
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

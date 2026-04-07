@@ -2,65 +2,202 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="glass-card text-center mb-5">
-    <h1 class="display-4 mb-3"><i class="fas fa-trophy me-3"></i>Welcome to College Event Portal</h1>
-    <p class="lead">Manage and participate in exciting college events</p>
+<!-- Hero Section -->
+<div class="glass-card text-center mb-5" style="padding: 4rem 2rem;">
+    <div class="mb-4">
+        <i class="fas fa-trophy" style="font-size: 4rem; background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+    </div>
+    <h1 class="display-3 fw-bold mb-3">
+        <span class="text-gradient">Welcome to</span><br/>
+        College Event Portal
+    </h1>
+    <p class="lead mb-4" style="color: #6b7280; font-size: 1.25rem;">
+        Discover, participate, and excel in exciting college events.<br/>
+        Join thousands of students in their journey to success!
+    </p>
     <div class="mt-4">
         @if (!User.Identity!.IsAuthenticated)
         {
-            <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg me-3">
-                <i class="fas fa-user-plus me-2"></i>Get Started
+            <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg me-3 pulse">
+                <i class="fas fa-rocket me-2"></i>Get Started Free
             </a>
             <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-lg">
-                <i class="fas fa-sign-in-alt me-2"></i>Login
+                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+            </a>
+        }
+        else
+        {
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">
+                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                </a>
+            }
+            else if (User.IsInRole("Judge"))
+            {
+                <a asp-area="Judge" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">
+                    <i class="fas fa-gavel me-2"></i>Judge Panel
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Student" asp-action="Events" class="btn btn-primary btn-lg">
+                    <i class="fas fa-calendar-alt me-2"></i>Browse Events
+                </a>
+            }
+        }
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-number">@ViewBag.TotalEvents</div>
+            <div class="stat-label">Total Events</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-number">@ViewBag.TotalParticipants</div>
+            <div class="stat-label">Active Participants</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <i class="fas fa-fire"></i>
+            </div>
+            <div class="stat-number">@ViewBag.OngoingEvents</div>
+            <div class="stat-label">Ongoing Events</div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="glass-card mb-5">
+    <h2 class="text-center mb-5">
+        <span class="text-gradient"><i class="fas fa-star me-2"></i>Why Choose Us?</span>
+    </h2>
+    <div class="row g-4">
+        <div class="col-md-4 text-center">
+            <div class="mb-3">
+                <i class="fas fa-bolt fa-3x" style="color: #f59e0b;"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Easy Registration</h4>
+            <p class="text-muted">Register for events in seconds with our streamlined process. No hassle, just pure excitement!</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="mb-3">
+                <i class="fas fa-users-cog fa-3x" style="color: #8b5cf6;"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Team Management</h4>
+            <p class="text-muted">Create teams, invite members, and collaborate seamlessly. Teamwork makes the dream work!</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="mb-3">
+                <i class="fas fa-trophy fa-3x" style="color: #ef4444;"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Real-time Results</h4>
+            <p class="text-muted">Track your performance with live leaderboards and instant score updates. Stay ahead of the game!</p>
+        </div>
+    </div>
+</div>
+
+<!-- Upcoming Events Section -->
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="fas fa-calendar-alt me-2 text-gradient"></i>
+            <span class="text-gradient">Upcoming Events</span>
+        </h2>
+        @if (User.Identity!.IsAuthenticated && !User.IsInRole("Admin") && !User.IsInRole("Judge"))
+        {
+            <a asp-controller="Student" asp-action="Events" class="btn btn-primary">
+                <i class="fas fa-arrow-right me-2"></i>View All
             </a>
         }
     </div>
-</div>
-
-<div class="row mb-4">
-    <div class="col-md-4 mb-3">
-        <div class="glass-card text-center">
-            <i class="fas fa-calendar-check fa-3x mb-3" style="color: #6366f1;"></i>
-            <h3>@ViewBag.TotalEvents</h3>
-            <p class="text-muted">Total Events</p>
-        </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="glass-card text-center">
-            <i class="fas fa-users fa-3x mb-3" style="color: #8b5cf6;"></i>
-            <h3>@ViewBag.TotalParticipants</h3>
-            <p class="text-muted">Active Participants</p>
-        </div>
-    </div>
-    <div class="col-md-4 mb-3">
-        <div class="glass-card text-center">
-            <i class="fas fa-fire fa-3x mb-3" style="color: #f59e0b;"></i>
-            <h3>@ViewBag.OngoingEvents</h3>
-            <p class="text-muted">Ongoing Events</p>
-        </div>
-    </div>
-</div>
-
-<div class="glass-card">
-    <h2 class="mb-4"><i class="fas fa-calendar-alt me-2"></i>Upcoming Events</h2>
-    <div class="row">
-        @foreach (var evt in ViewBag.UpcomingEvents)
-        {
-            <div class="col-md-4 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">@evt.Name</h5>
-                        <p class="card-text text-muted">@evt.Description?.Substring(0, Math.Min(100, evt.Description.Length))...</p>
-                        <p class="mb-2"><i class="fas fa-calendar me-2"></i>@evt.StartDate.ToString("MMM dd, yyyy")</p>
-                        <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>@evt.Venue</p>
-                        @if (User.Identity!.IsAuthenticated)
-                        {
-                            <a asp-controller="Student" asp-action="EventDetails" asp-route-id="@evt.Id" class="btn btn-primary btn-sm">View Details</a>
-                        }
+    
+    @if (ViewBag.UpcomingEvents != null && ViewBag.UpcomingEvents.Count > 0)
+    {
+        <div class="row g-4">
+            @foreach (var evt in ViewBag.UpcomingEvents)
+            {
+                <div class="col-md-4">
+                    <div class="card event-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-primary">@evt.EventType</span>
+                                <span class="badge bg-success">@evt.Status</span>
+                            </div>
+                            <h5 class="card-title fw-bold mb-3">@evt.Name</h5>
+                            <p class="card-text text-muted mb-3">
+                                @(evt.Description?.Length > 100 ? evt.Description.Substring(0, 100) + "..." : evt.Description)
+                            </p>
+                            <div class="mb-2">
+                                <i class="fas fa-calendar text-primary me-2"></i>
+                                <small class="text-muted">@evt.StartDate.ToString("MMM dd, yyyy")</small>
+                            </div>
+                            <div class="mb-3">
+                                <i class="fas fa-clock text-warning me-2"></i>
+                                <small class="text-muted">@evt.StartDate.ToString("hh:mm tt")</small>
+                            </div>
+                            @if (evt.Venue != null)
+                            {
+                                <div class="mb-3">
+                                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                    <small class="text-muted">@evt.Venue</small>
+                                </div>
+                            }
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-users me-1"></i>
+                                    @evt.Registrations.Count / @evt.MaxParticipants
+                                </small>
+                                @if (User.Identity!.IsAuthenticated && !User.IsInRole("Admin") && !User.IsInRole("Judge"))
+                                {
+                                    <a asp-controller="Student" asp-action="EventDetails" asp-route-id="@evt.Id" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-arrow-right me-1"></i>Details
+                                    </a>
+                                }
+                                else if (!User.Identity!.IsAuthenticated)
+                                {
+                                    <a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-outline-primary">
+                                        Login to Register
+                                    </a>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">No upcoming events at the moment</h4>
+            <p class="text-muted">Check back soon for exciting new events!</p>
+        </div>
+    }
 </div>
+
+<!-- Call to Action -->
+@if (!User.Identity!.IsAuthenticated)
+{
+    <div class="glass-card text-center mt-5" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));">
+        <h2 class="text-gradient mb-3">Ready to Get Started?</h2>
+        <p class="lead text-muted mb-4">Join thousands of students and start your journey today!</p>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg pulse">
+            <i class="fas fa-rocket me-2"></i>Create Free Account
+        </a>
+    </div>
+}

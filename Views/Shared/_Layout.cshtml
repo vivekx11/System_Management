@@ -7,69 +7,138 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <style>
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
-        .navbar { background: rgba(255, 255, 255, 0.95) !important; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-        .glass-card { background: rgba(255, 255, 255, 0.95); border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); padding: 2rem; margin-bottom: 2rem; }
-        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; border-radius: 10px; }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index"><i class="fas fa-calendar-alt me-2"></i>College Events</a>
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-graduation-cap me-2"></i>College Events
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item"><a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Events" asp-action="Index">
+                                    <i class="fas fa-calendar-check me-1"></i>Events
+                                </a>
+                            </li>
                         }
                         else if (User.IsInRole("Judge"))
                         {
-                            <li class="nav-item"><a class="nav-link" asp-area="Judge" asp-controller="Home" asp-action="Index">Judge Panel</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Judge" asp-controller="Home" asp-action="Index">
+                                    <i class="fas fa-gavel me-1"></i>Judge Panel
+                                </a>
+                            </li>
                         }
                         else
                         {
-                            <li class="nav-item"><a class="nav-link" asp-controller="Student" asp-action="Index">Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Student" asp-action="Events">Events</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Student" asp-action="Index">
+                                    <i class="fas fa-chart-line me-1"></i>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Student" asp-action="Events">
+                                    <i class="fas fa-calendar-alt me-1"></i>Events
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Team" asp-action="Index">
+                                    <i class="fas fa-users me-1"></i>Teams
+                                </a>
+                            </li>
                         }
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">@User.Identity.Name</a>
-                            <ul class="dropdown-menu">
-                                <li><form asp-controller="Account" asp-action="Logout" method="post"><button type="submit" class="dropdown-item">Logout</button></form></li>
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>@User.Identity.Name
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg" style="border-radius: 12px; border: none;">
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </li>
                     }
                     else
                     {
-                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Login">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Register">Register</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                <i class="fas fa-sign-in-alt me-1"></i>Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary btn-sm ms-2" asp-controller="Account" asp-action="Register">
+                                <i class="fas fa-user-plus me-1"></i>Register
+                            </a>
+                        </li>
                     }
                 </ul>
             </div>
         </div>
     </nav>
     
-    <div class="container" style="min-height: calc(100vh - 200px); padding: 2rem 0;">
+    <div class="container" style="min-height: calc(100vh - 200px); padding: 2rem 0; position: relative; z-index: 1;">
         @if (TempData["Success"] != null)
         {
-            <div class="alert alert-success alert-dismissible fade show">@TempData["Success"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+            <div class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         }
         @if (TempData["Error"] != null)
         {
-            <div class="alert alert-danger alert-dismissible fade show">@TempData["Error"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+            <div class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         }
-        @RenderBody()
+        <div class="fade-in">
+            @RenderBody()
+        </div>
     </div>
 
-    <footer class="text-center" style="background: rgba(255, 255, 255, 0.95); padding: 2rem 0;">
-        <div class="container"><p class="mb-0">&copy; 2026 College Event Management Portal</p></div>
+    <footer class="text-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-md-start mb-3 mb-md-0">
+                    <h5 class="text-gradient mb-0"><i class="fas fa-graduation-cap me-2"></i>College Events</h5>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2026 College Event Management Portal</p>
+                    <small class="text-muted">Built with ❤️ for students</small>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="#" class="text-decoration-none me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="text-decoration-none me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-decoration-none me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" class="text-decoration-none"><i class="fab fa-linkedin fa-lg"></i></a>
+                </div>
+            </div>
+        </div>
     </footer>
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
