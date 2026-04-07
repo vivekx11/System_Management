@@ -12,7 +12,7 @@ namespace CollegeEventPortal.Data
             : base(options)
         {
         }
-
+        // appliction 
         public DbSet<Event> Events { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
