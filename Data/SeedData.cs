@@ -67,6 +67,7 @@ namespace CollegeEventPortal.Data
             // Create sample student
             var studentEmail = "student@college.edu";
             var studentUser = await userManager.FindByEmailAsync(studentEmail);
+            // student data 
 
             if (studentUser == null)
             {
