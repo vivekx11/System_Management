@@ -458,6 +458,7 @@ namespace CollegeEventPortal.Migrations
 
                     b.ToTable("Submissions");
                 });
+                // clone of a site 
 
             modelBuilder.Entity("CollegeEventPortal.Models.Team", b =>
                 {
