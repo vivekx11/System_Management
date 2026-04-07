@@ -1,4 +1,4 @@
-// view log 
+// view log attempt by user 
 
 using System.ComponentModel.DataAnnotations;
 
