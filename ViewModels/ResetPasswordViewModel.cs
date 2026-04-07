@@ -1,3 +1,5 @@
+// pwd
+
 using System.ComponentModel.DataAnnotations;
 
 namespace CollegeEventPortal.ViewModels

@@ -1,3 +1,5 @@
+//event log 
+
 using System.ComponentModel.DataAnnotations;
 
 namespace CollegeEventPortal.Models

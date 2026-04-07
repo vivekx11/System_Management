@@ -1,3 +1,5 @@
+// view log 
+
 using System.ComponentModel.DataAnnotations;
 
 namespace CollegeEventPortal.ViewModels

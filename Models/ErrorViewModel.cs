@@ -1,3 +1,5 @@
+// error log
+
 namespace CollegeEventPortal.Models;
 
 public class ErrorViewModel

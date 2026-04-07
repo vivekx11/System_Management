@@ -1,3 +1,5 @@
+// notification 
+
 namespace CollegeEventPortal.Models
 {
     public class Notification

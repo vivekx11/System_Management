@@ -1,3 +1,4 @@
+// seeddata
 using CollegeEventPortal.Models;
 using Microsoft.AspNetCore.Identity;
 
