@@ -6,6 +6,8 @@ namespace CollegeEventPortal.ViewModels
 {
     public class ResetPasswordViewModel
     {
+
+        // required 
         [Required]
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
