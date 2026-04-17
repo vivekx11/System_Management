@@ -1,5 +1,5 @@
 # College Event Management Portal
-
+---------------------------------------------------------------------
 A production-ready ASP.NET Core MVC web application for managing college events with role-based authentication, team management, scoring system, and certificate generation.
 
 ## Features
