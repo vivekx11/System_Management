@@ -6,6 +6,7 @@ namespace CollegeEventPortal.ViewModels
 {
     public class LoginViewModel
     {
+        // required 
         [Required]
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
