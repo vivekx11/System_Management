@@ -6,6 +6,7 @@ namespace CollegeEventPortal.ViewModels
 {
     public class RegisterViewModel
     {
+        // required all of this 
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
